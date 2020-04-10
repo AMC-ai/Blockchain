@@ -16,14 +16,14 @@ class Blockchain(object):
 
     def new_block(self, proof, previous_hash=None):
         """
-        Create a new Block in the Blockchain
+        Create a new Block in the Blockchain (genisis block which points to nothing)
 
         A block should have:
         * Index
         * Timestamp
         * List of current transactions
-        * The proof used to mine this block
-        * The hash of the previous block
+        * The proof used to mine this block (this is the salt)
+        * The hash of the previous block (this will make it unmodifiable)
 
         :param proof: <int> The proof given by the Proof of Work algorithm
         :param previous_hash: (Optional) <str> Hash of previous Block
@@ -42,6 +42,7 @@ class Blockchain(object):
             'timestamp': time(),
             'transactions': self.current_transactions,
             'proof': proof,
+            # so if the is genisis then hash and chain if its not use previous hash to chain
             'previous_hash': previous_hash or self.hash(self.chain[-1]),
             'hash': current_hash,
         }
@@ -86,6 +87,7 @@ class Blockchain(object):
         # TODO: Return the hashed block string in hexadecimal format
         return hex_hash
 
+    # this allows us to access the last block in out chain
     @property
     def last_block(self):
         return self.chain[-1]
